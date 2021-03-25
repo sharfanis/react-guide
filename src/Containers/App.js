@@ -1,72 +1,79 @@
-import React, { Component, useState } from "react";
-import classes from "./App.css";
-// import UserInput from "../Components/UserInput/UserInput";
-// import UserOutput from "../Components/UserOutput/UserOutput";
-// import ErrorBoundary from "../Components/ErrorBoundary/ErrorBoundary";
-import Employees from "./../Components/Employees/Employees";
-import Cockpit from "../Components/Cockpit/Cockpit";
+import React, { Component } from 'react';
+
+import classes from './App.css';
+import Employees from '../Components/Employees/Employees';
+import Cockpit from '../Components/Cockpit/Cockpit';
 
 class App extends Component {
-  render() {
-    const [employeeVisibility, setEmployeeVisibility] = useState(false);
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
 
-    const [person, setPersonState] = useState({
-      persons: [
-        {
-          id: 1,
-          name: "Shabih",
-          age: 32,
-        },
-        {
-          id: 2,
-          name: "oshu",
-          age: 27,
-        },
-        {
-          id: 3,
-          name: "Hitt",
-          age: 21,
-        },
-      ],
-      otherState: "Random text",
+  state = {
+    persons: [
+      { id: 'asfa1', name: 'Max', age: 28 },
+      { id: 'vasdf1', name: 'Manu', age: 29 },
+      { id: 'asdf11', name: 'Stephanie', age: 26 }
+    ],
+    otherState: 'some other value',
+    showPersons: false
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
+  }
+
+  componentWillMount() {
+    console.log('[App.js] componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
     });
 
-    let employee = null;
-
-    const deleteEmployeeHandler = (index) => {
-      console.log(index);
-      // Make a copy
-      const temp = [...person.persons];
-      temp.splice(index, 1);
-
-      // That's how you update the values. Very Important Concept.
-      //Never update the orignal array , always make a copy and then mutate the array !!
-      setPersonState((prevState) => ({ ...prevState, persons: temp }));
+    const person = {
+      ...this.state.persons[personIndex]
     };
 
-    const nameChangeHandler = (event, id) => {
-      // Copy of original array.
-      const duplicateEmployees = [...person.persons];
-      // Find Index
-      const indexVal = person.persons.findIndex((x) => x.id === id);
-      duplicateEmployees[indexVal].name = event.target.value;
-      setPersonState((prevState) => ({
-        ...prevState,
-        persons: duplicateEmployees,
-      }));
-    };
+    // const person = Object.assign({}, this.state.persons[personIndex]);
 
-    const toggleChangehandler = () => {
-      setEmployeeVisibility(!employeeVisibility);
-    };
+    person.name = event.target.value;
 
-    // For visibility if the employee visibility is true then ,
-    if (employeeVisibility) {
-      employee = (
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
+  };
+
+  deletePersonHandler = personIndex => {
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
+  };
+
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow });
+  };
+
+  render() {
+    console.log('[App.js] render');
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
         <Employees
-          persons={person.persons}
-          deleteEmployee={deleteEmployeeHandler}
-          nameChange={nameChangeHandler}
+          persons={this.state.persons}
+          deleteEmployee={this.deletePersonHandler}
+          nameChange={this.nameChangedHandler}
         />
       );
     }
@@ -74,13 +81,14 @@ class App extends Component {
     return (
       <div className={classes.App}>
         <Cockpit
-          title={props.title}
-          toggleChange={toggleChangehandler}
-          employeeVisibilityFlag={employeeVisibility}
+          title={this.props.title}
+          employeeVisibilityFlag={this.state.showPersons}
+          toggleChange={this.togglePersonsHandler}
         />
-        {employeeVisibility ? employee : null}
+        {persons}
       </div>
     );
   }
 }
+
 export default App;
