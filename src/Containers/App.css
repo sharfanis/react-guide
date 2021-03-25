@@ -2,24 +2,3 @@
   text-align: center;
 }
 
-.Button {
-  background-color: green;
-  font: inherit;
-  border: 1px solid blue;
-  padding: 18px;
-  cursor: pointer;
-  color: white;
-}
-.Button:hover {
-  background-color: lightgreen;
-  color: black;
-}
-
-
-.Button.Red {
-    background-color: red;
-}
-
-.Button.Red:hover {
-  background-color: salmon;
-}

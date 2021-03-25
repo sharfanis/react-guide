@@ -1,7 +1,7 @@
 import React from "react";
-import classes from '../../Containers/App.css';
+import classes from "./Cockpit.css";
 
-const Cockpit = (props) => {
+const Cockpit = ( props ) => {
   let btnClass = [classes.Button];
   // For visibility if the employee visibility is true then ,
   if (props.employeeVisibilityFlag) {
@@ -10,7 +10,7 @@ const Cockpit = (props) => {
 
   return (
     <div>
-      <h1> Shabih </h1>
+      <h1> {props.title} </h1>
       <button className={btnClass.join(" ")} onClick={props.toggleChange}>
         Toggle Employees Data
       </button>
