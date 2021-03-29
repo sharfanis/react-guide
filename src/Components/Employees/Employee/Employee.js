@@ -6,6 +6,18 @@ import PropTypes from "prop-types";
 // import Radium from 'radium';
 
 class Employee extends Component {
+
+  constructor(props){
+    super(props);
+    this.inputElementRef = React.createRef();
+  }
+
+  // Executes after render()
+ componentDidMount() {
+   this.inputElementRef.current.focus();
+  // this.inputElement.focus();
+ }
+
   render() {
     console.log("[Employee.js rendering");
     return (
@@ -16,6 +28,8 @@ class Employee extends Component {
         <input
           style={styles.inputStyle}
           type="text"
+         // ref={(inputEl) => {this.inputElement = inputEl}}
+          ref={this.inputElementRef}
           onChange={this.props.changeOnInput}
           value={this.props.name}
         />

@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
 
 const Cockpit = (props) => {
+  // USe of USEREF for fucntional components.
+
+  const toggleButtonRef = useRef(null);
+
   //   useEffect(() => {
   //     console.log("[Cockpit.js useEffect");
 
@@ -14,7 +18,7 @@ const Cockpit = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-     // alert(" Only one time");
+      // alert(" Only one time");
       console.log("[Cockpit.js] Coming from USE Effect");
     }, 1000);
 
@@ -25,11 +29,12 @@ const Cockpit = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("[Cockpit.js 2 useEffect");
+    // Calling toggleButton Ref
+    toggleButtonRef.current.click();
     return () => {
       console.log("[Cockpit.js] 2 Clean UP WORK for Second USE EFFECT");
     };
-  });
+  },[]);
 
   let btnClass = [classes.Button];
   // For visibility if the employee visibility is true then ,
@@ -40,7 +45,11 @@ const Cockpit = (props) => {
   return (
     <div>
       <h1> {props.title} </h1>
-      <button className={btnClass.join(" ")} onClick={props.toggleChange}>
+      <button
+        ref={toggleButtonRef}
+        className={btnClass.join(" ")}
+        onClick={props.toggleChange}
+      >
         Toggle Employees Data
       </button>
     </div>
