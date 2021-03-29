@@ -4,6 +4,7 @@ import classes from "./App.css";
 import Employees from "../Components/Employees/Employees";
 import Cockpit from "../Components/Cockpit/Cockpit";
 import withClass from "../Components/HOC/WithClass";
+import AuthContext from "./../Components/Context/authContext";
 
 class App extends Component {
   constructor(props) {
@@ -83,6 +84,10 @@ class App extends Component {
     });
   };
 
+  loginHandler = () => {
+    this.setState({ authenticated: true });
+  };
+
   render() {
     console.log("[App.js] render");
     let persons = null;
@@ -104,15 +109,23 @@ class App extends Component {
         <button onClick={this.toggleCockpitHandler}>
           Remove Cockpit Component
         </button>
-        {this.state.showCockpit ? (
-          <Cockpit
-            title={this.props.title}
-            // persons={this.state.persons}
-            employeeVisibilityFlag={this.state.showPersons}
-            toggleChange={this.togglePersonsHandler}
-          />
-        ) : null}
-        {persons}
+
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler,
+          }}
+        >
+          {this.state.showCockpit ? (
+            <Cockpit
+              title={this.props.title}
+              // persons={this.state.persons}
+              employeeVisibilityFlag={this.state.showPersons}
+              toggleChange={this.togglePersonsHandler}
+            />
+          ) : null}
+          {persons}
+        </AuthContext.Provider>
       </div>
     );
   }

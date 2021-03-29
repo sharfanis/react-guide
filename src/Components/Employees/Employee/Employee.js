@@ -2,33 +2,37 @@ import React, { Component, Fragment } from "react";
 import classes from "../Employee/Employee.css";
 import withClass from "../../HOC/WithClass";
 import PropTypes from "prop-types";
-
 // import Radium from 'radium';
+import AuthContext from "./../../Context/authContext";
 
 class Employee extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.inputElementRef = React.createRef();
   }
 
   // Executes after render()
- componentDidMount() {
-   this.inputElementRef.current.focus();
-  // this.inputElement.focus();
- }
+  componentDidMount() {
+    this.inputElementRef.current.focus();
+    // this.inputElement.focus();
+  }
 
   render() {
     console.log("[Employee.js rendering");
     return (
       <Fragment>
+        <AuthContext.Consumer>
+          {(context) =>
+            context.authenticated ? <p>Authenticated</p> : <p>Please login !</p>
+          }
+        </AuthContext.Consumer>
         <p onClick={this.props.click}>
           Name is: {this.props.name} and my age is {this.props.age}
         </p>
         <input
           style={styles.inputStyle}
           type="text"
-         // ref={(inputEl) => {this.inputElement = inputEl}}
+          // ref={(inputEl) => {this.inputElement = inputEl}}
           ref={this.inputElementRef}
           onChange={this.props.changeOnInput}
           value={this.props.name}

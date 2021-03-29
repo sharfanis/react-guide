@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import classes from "./Cockpit.css";
 
+import AuthContext from "./../Context/authContext";
+
 const Cockpit = (props) => {
   // USe of USEREF for fucntional components.
 
@@ -34,7 +36,7 @@ const Cockpit = (props) => {
     return () => {
       console.log("[Cockpit.js] 2 Clean UP WORK for Second USE EFFECT");
     };
-  },[]);
+  }, []);
 
   let btnClass = [classes.Button];
   // For visibility if the employee visibility is true then ,
@@ -52,6 +54,13 @@ const Cockpit = (props) => {
       >
         Toggle Employees Data
       </button>
+      <AuthContext.Consumer>
+        {(context) => (
+          <button className={btnClass.join(" ")} onClick={context.login}>
+            Login
+          </button>
+        )}
+      </AuthContext.Consumer>
     </div>
   );
 };
